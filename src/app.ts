@@ -77,17 +77,15 @@ function alterarProduto(req: Request, res: Response):void{
             throw new Error("Favor enviar os valores corretos");
         }
         let id:any = req.params.id;
-        const filtrados = produtos.filter(produtos => produtos.id === id);
-        if (filtrados.length > 0){
-        filtrados[0].id = data.id;
-        filtrados[0].preco = data.preco;
-        filtrados[0].nome = data.nome;
-        filtrados[0].fabricante = data.fabricante;
-        filtrados[0].fabricante.nome = data.fabricante;
-        filtrados[0].fabricante.endereco = data.fabricante.endereco;
-        filtrados[0].fabricante.endereco.cidade = data.fabricante.endereco.cidade;
-        filtrados[0].fabricante.endereco.pais = data.fabricante.endereco.pais;
-        res.status(201).json(filtrados[0]);
+        let index = produtos.findIndex(p => p.id === id)
+        if (index >= 0){
+            produtos[index].id = Number(data.id);
+            produtos[index].preco = Number(data.preco);
+            produtos[index].nome = data.nome;
+            produtos[index].fabricante.nome = data.fabricante.nome;
+            produtos[index].fabricante.endereco.cidade = data.fabricante.endereco.cidade;
+            produtos[index].fabricante.endereco.pais = data.fabricante.endereco.pais;
+        res.status(201).json(produtos[index]);
     }   else {
         res.status(404).json({ Message: "Produto não encontrado" });
     }
@@ -100,9 +98,12 @@ function alterarProduto(req: Request, res: Response):void{
 function removerProdutoPorID(req: Request, res: Response):void{
     try{
         let id:any = Number(req.params.id);
-        const filtrados = produtos.filter(produtos => produtos.id === id);
-        if (filtrados.length > 0){
-        res.status(200).json(filtrados.shift());
+        //const filtrados = produtos.filter(produtos => produtos.id === id);
+        let index = produtos.findIndex(p => p.id === id)
+        if (index >= 0){
+        let deletado = produtos[index];
+            produtos.splice(index, 1)    
+        res.status(200).json(deletado);
     }   else {
         res.status(404).json({ Message: "Produto não encontrado" });
     }
@@ -115,9 +116,9 @@ function removerProdutoPorID(req: Request, res: Response):void{
 
 app.get('/api/produto/:id', filtraProdutoPorID);
 app.get('/api/produto', filtraProdutoPorNome);
-app.get('/api/produto/list', listarProdutos);
+app.get('/api/produtos', listarProdutos);   
 app.post('/api/produto',criarProduto);
 app.put('/api/produto:id',alterarProduto);
-app.delete('/api/produto:id',removerProdutoPorID);
+app.delete('/api/produto/:id',removerProdutoPorID);
 
 app.listen(PORT, () => console.log(`API rodando na URL : http://localhost:${PORT}`));
