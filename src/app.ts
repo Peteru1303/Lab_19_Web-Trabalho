@@ -31,6 +31,16 @@ function filtraProdutoPorID(req: Request, res: Response):void{
     }
 }
 
+function filtraProdutoPorNome(req: Request, res: Response):void{
+    try{
+        let name:any = req.query.name;
+        res.status(200).json({Name: name });
+
+    }catch(e: unknown){
+        res.status(400).json({Message: "Necessário informar um ID válido"});
+    }
+}
+
 function listarProdutos(req: Request, res: Response):void{
     try{
         if (produtos.length > 0){
@@ -44,20 +54,10 @@ function listarProdutos(req: Request, res: Response):void{
     }
 }
 
-function filtraProdutoPorNome(req: Request, res: Response):void{
-    try{
-        let name:any = req.query.name;
-        res.status(200).json({Name: name });
-
-    }catch(e: unknown){
-        res.status(400).json({Message: "Necessário informar um ID válido"});
-    }
-}
-
 function criarProduto(req: Request, res: Response):void{
     try{
         let data:any = req.body;
-        if(!data.id || !data.preco || !data.fabricante || !data.nome){
+        if(!data.id || !data.preco || !data.fabricante || !data.nome || !data.preco || !data.fabricante ){
             throw new Error("Favor enviar os valores corretos");
         }
 
@@ -73,18 +73,19 @@ function criarProduto(req: Request, res: Response):void{
 function alterarProduto(req: Request, res: Response):void{
     try{
         let data:any = req.body;
-        if(!data.id || !data.preco || !data.fabricante || !data.nome){
+        if(!data.id || !data.preco || !data.fabricante || !data.nome || !data.preco || !data.fabricante ){
             throw new Error("Favor enviar os valores corretos");
         }
-        let id:any = req.params.id;
+        let id:any = Number(req.params.id);
+        console.log('>>>>', produtos)
         let index = produtos.findIndex(p => p.id === id)
+        console.log('>>>>>>', index)
         if (index >= 0){
             produtos[index].id = Number(data.id);
             produtos[index].preco = Number(data.preco);
             produtos[index].nome = data.nome;
-            produtos[index].fabricante.nome = data.fabricante.nome;
-            produtos[index].fabricante.endereco.cidade = data.fabricante.endereco.cidade;
-            produtos[index].fabricante.endereco.pais = data.fabricante.endereco.pais;
+            produtos[index].fabricante = data.fabricante;
+
         res.status(201).json(produtos[index]);
     }   else {
         res.status(404).json({ Message: "Produto não encontrado" });
@@ -98,7 +99,6 @@ function alterarProduto(req: Request, res: Response):void{
 function removerProdutoPorID(req: Request, res: Response):void{
     try{
         let id:any = Number(req.params.id);
-        //const filtrados = produtos.filter(produtos => produtos.id === id);
         let index = produtos.findIndex(p => p.id === id)
         if (index >= 0){
         let deletado = produtos[index];
@@ -118,7 +118,7 @@ app.get('/api/produto/:id', filtraProdutoPorID);
 app.get('/api/produto', filtraProdutoPorNome);
 app.get('/api/produtos', listarProdutos);   
 app.post('/api/produto',criarProduto);
-app.put('/api/produto:id',alterarProduto);
+app.put('/api/produto/:id',alterarProduto);
 app.delete('/api/produto/:id',removerProdutoPorID);
 
 app.listen(PORT, () => console.log(`API rodando na URL : http://localhost:${PORT}`));
