@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
-import { Produto } from "./Produto";
+import { Produto } from "./model/Produto";
+import { cadastrarProduto, recuperarProdutoPorID } from "./controller/productcontroller";
 
 const dns = require('dns'); //resposta do stack overflow para um erro de conexão que tinha no postman
 
@@ -112,10 +113,10 @@ function removerProdutoPorID(req: Request, res: Response):void{
 }
 
 
-app.get('/api/produto/:id', filtraProdutoPorID);
+app.get('/api/produto/:id', recuperarProdutoPorID);
 app.get('/api/produto', filtraProdutoPorNome);
 app.get('/api/produtos', listarProdutos);   
-app.post('/api/produto',criarProduto);
+app.post('/api/produto',cadastrarProduto);
 app.put('/api/produto/:id',alterarProduto);
 app.delete('/api/produto/:id',removerProdutoPorID);
 

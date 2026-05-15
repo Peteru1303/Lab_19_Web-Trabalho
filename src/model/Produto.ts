@@ -1,5 +1,5 @@
-	import { Fabricante } from "./Fabricante"
-	
+import { Fabricante } from "./Fabricante"
+
 	export class Produto {
 		id: number
 		nome: string
