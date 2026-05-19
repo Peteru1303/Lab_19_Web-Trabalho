@@ -15,14 +15,23 @@ export class ProdutoRepository {
      }
     
      insereProduto (produto: Produto) {
-     this.produtoList.push (produto);
+     this.produtoList.push(produto);
      }
      filtrarProdutoPorID (id: number):Produto|undefined{
         const filtrados = this.produtoList.filter(produtos => produtos.id === id);
         if(filtrados.length > 0)   
         return filtrados[0]
+        else
         return undefined
      }
+     listarProdutos():Produto|undefined{
+        const produtos = this.produtoList;
+        if(produtos.length > 0)   
+        return produtos[0]
+        else
+        return undefined
+     }
+     
      // ... outros metodos
      }
     

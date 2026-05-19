@@ -17,5 +17,9 @@ export class ProdutoService {
         const produtoLocalizado: Produto|undefined = this.produtoRepository.filtrarProdutoPorID(id)
         return produtoLocalizado
     }
+    listarProdutos(){
+        const produtoLocalizado: Produto|undefined = this.produtoRepository.listarProdutos()
+        return produtoLocalizado
+    }
      // ... outros metodos
 }

@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { Produto } from "./model/Produto";
-import { cadastrarProduto, recuperarProdutoPorID } from "./controller/productcontroller";
+import { cadastrarProduto, listarProdutos, recuperarProdutoPorID } from "./controller/productcontroller";
 
 const dns = require('dns'); //resposta do stack overflow para um erro de conexão que tinha no postman
 
@@ -42,18 +42,18 @@ function filtraProdutoPorNome(req: Request, res: Response):void{
     }
 }
 
-function listarProdutos(req: Request, res: Response):void{
-    try{
-        if (produtos.length > 0){
-        res.status(200).json(produtos);
-    }   else {
-        res.status(404).json({ Message: "Lista de produtos vazia." });
-    }
+// function listarProdutos(req: Request, res: Response):void{
+//     try{
+//         if (produtos.length > 0){
+//         res.status(200).json(produtos);
+//     }   else {
+//         res.status(404).json({ Message: "Lista de produtos vazia." });
+//     }
 
-    }catch(e: unknown){
-        res.status(400).json({Message: "Erro desconhecido."});
-    }
-}
+//     }catch(e: unknown){
+//         res.status(400).json({Message: "Erro desconhecido."});
+//     }
+// }
 
 function criarProduto(req: Request, res: Response):void{
     try{

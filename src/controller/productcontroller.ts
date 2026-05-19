@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ProdutoService } from "../service/Productservice";
+import { ProdutoService } from "../service/ProdutoService";
 
 
 const produtoService = new ProdutoService();
@@ -22,6 +22,20 @@ export function recuperarProdutoPorID(req: Request, res: Response):void{
         res.status(200).json(produtolocalizado);
     }   else {
         res.status(404).json({ Message: "Produto não encontrado" });
+    }
+
+    }catch(e: unknown){
+        res.status(400).json({Message: "Informar ID valido"});
+    }
+}
+
+export function listarProdutos(req: Request, res: Response):void{
+    try{
+        const produtolocalizado = produtoService.listarProdutos()
+        if (produtolocalizado){
+        res.status(200).json(produtolocalizado);
+    }   else {
+        res.status(404).json({ Message: "Lista Vazia!" });
     }
 
     }catch(e: unknown){
